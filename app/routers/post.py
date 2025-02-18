@@ -6,7 +6,7 @@ from fastapi import Response, status, HTTPException, Depends, APIRouter
 from ..database import get_db
 
 
-router = APIRouter(
+router = APIRouter( 
     prefix="/posts",
     tags=['Posts']
 ) 
@@ -17,13 +17,12 @@ def get_posts(db: Session = Depends(get_db), current_user: int = Depends(oauth2.
                search: Optional[str] = ""):
     # posts = db.query(models.Post).filter(models.Post.title.contains(search)).limit(limit).offset(skip).all()
     posts_query = db.query(models.Post,func.count(models.Vote.post_id,).label("likes")).join(models.Vote, models.Vote.post_id == models.Post.id,isouter=True).group_by(models.Post.id).filter(models.Post.title.contains(search)).limit(limit).offset(skip).all()     
+   
     if not posts_query: return []
     posts = [ 
     schemas.PostOut(post=post, likes=likes)for post, likes in posts_query
     ]
     return posts 
-
-
 
 
 # get user posts

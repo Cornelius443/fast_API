@@ -10,7 +10,6 @@ from .routers import post, user, auth, vote
 
 app = FastAPI() 
 origins = ["*"]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -27,7 +26,7 @@ app.include_router(vote.router)
 # root
 @app.get("/")
 def read_root():
-    return {"Hello": "Welcome to my API Champ"} 
+    return {"Hello": "Welcome to my API Champ!"} 
 
 
 
